@@ -14,6 +14,9 @@ import launchcore
 def mkdir(dir):
     if not(os.path.exists(dir)):
         os.makedirs(dir)
+        return 1
+    else:
+        return 0
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
