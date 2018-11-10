@@ -14,5 +14,5 @@ def login(ID, password):
             return 0,res['selectedProfile']['name'],res["selectedProfile"]["id"],res['accessToken'],res['clientToken']
     else:
         return 2,response.status_code
-def launch(name,version,uuid,token):
-    subprocess.check_output(['cmd', '/c echo 에휴'],universal_newlines=True)
+'''def launch(name,version,uuid,token):
+    subprocess.check_output(['cmd', '/c echo 에휴'],universal_newlines=True)'''
