@@ -9,7 +9,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
+import os
 import launchcore
+def mkdir(dir):
+    if not(os.path.exists(dir)):
+        os.makedirs(dir)
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
