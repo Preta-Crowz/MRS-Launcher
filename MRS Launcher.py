@@ -16,6 +16,7 @@ modpack = check()
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        makefolder("./instance")
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(953, 658)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -195,7 +196,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "ID/이메일"))
         self.label_4.setText(_translate("MainWindow", "비밀번호"))
         self.button_launch.setText(_translate("MainWindow", "실행"))
-        self.label_5.setText(_translate("MainWindow", "<html><head/><body><p>JVM Arguments</p><p>(아무거나 쓰지마세요)</p></body></html>"))
+        self.label_5.setText(_translate("MainWindow", "<html><head/><body><p>JVM Arguments</p><p>(램 할당량은 이곳에 쓰지 말아주세요)</p><p>(아무거나 쓰지마세요)</p></body></html>"))
 
 
 if __name__ == "__main__":

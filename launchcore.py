@@ -5,12 +5,17 @@ from subprocess import Popen
 from tkinter import messagebox
 
 import requests
-import wget
+from wget import download
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-
+def makefolder(folder):
+    if not(os.path.isdir(folder)):
+        os.makedirs(os.path.join(folder))
+        return 0
+    else:
+        return 1
 def check():
     URL = 'https://gametowndev.tk/list.json'
     response = requests.get(URL)
@@ -32,6 +37,11 @@ def login(ID, password):
 def launch(modpack):
     print("실행")
     print(modpack)
+    url = "https://gametowndev.tk/{}.json".format(modpack)
+    response = requests.get(url)
+    packdata = response.json()
+    print(packdata['version'])
+    makefolder("./instance/{}".format(modpack))
 
 def launchwrapper(self, obj1, obj2, obj3):
     id=obj1.text()
