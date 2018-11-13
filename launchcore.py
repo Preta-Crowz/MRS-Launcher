@@ -44,17 +44,23 @@ def download(url,folder):
     subprocess.call(["./wget.exe", "-P {} {}".format(folder, url)])
 def downloadfolder(url,folder):
     subprocess.call(["./wget.exe", "-r -P {} {}".format(folder, url)])
-def launch(modpack):
+def launch(modpack,jvm):
     with open("./instance/{}/timestamp.json".format(modpack)) as f:
         data = json.load(f)
+    with open("./instance/jvm.txt", 'w') as f:
+        f.write(jvm)
     print("실행")
     print(modpack)
     url = "https://gametowndev.tk/{}.json".format(modpack)
     response = requests.get(url)
     packdata = response.json()
+    time = "https://gametowndev.tk/{}/timestamp.json".format(modpack)
+    timestamp = requests.get(time).json()['timestamp']
     print(packdata['version'])
-    if packdata['timestamp'] > data['timestamp']:
+    if timestamp > data['timestamp']:
         update(modpack,packdata)
+    path = os.environ['cd']
+    ctypes.windll.shell32.ShellExecute(0,'open',cd + "/java/bin/java.exe")
     
 def update(modpack, packdata):
     update = packdata['update']
@@ -63,7 +69,7 @@ def update(modpack, packdata):
     for i in update:
         delfolder(folder + "/" + i)
     downloadfolder("https://gametowndev.tk/{}".format(modpack), "./instance/{}".format(modpack))
-def launchwrapper(self, obj1, obj2, obj3):
+def launchwrapper(self, obj1, obj2, obj3, obj4):
     id=obj1.text()
     password=obj2.text()
     root = tkinter.Tk()
@@ -77,6 +83,6 @@ def launchwrapper(self, obj1, obj2, obj3):
         root.withdraw()
         messagebox.showerror("Error","Http 통신에러\n서버 응답코드 {}".format(data[1]))
     else:
-        launch(obj3.currentItem().text())
+        launch(obj3.currentItem().text(),obj4.toPlainText())
     print("실행 워래퍼")
     print(data)

@@ -17,6 +17,11 @@ modpack = check()
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         makefolder("./instance")
+        if os.path.isfile("./instance/jvm.txt"):
+            with open("./instance/jvm.txt", 'r') as f:
+                jvmtext = f.read()
+        else:
+            jvmtext = "-Xmn512m -XX:PermSize=512m -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:ParallelGCThreads=4 -XX:MaxGCPauseMillis=5 -XX:+UseAdaptiveGCBoundary -XX:-UseGCOverheadLimit -XX:+UseBiasedLocking -XX:SurvivorRatio=8 -XX:TargetSurvivorRatio=90 -XX:+UseLargePages -XX:MaxTenuringThreshold=15 -Xnoclassgc -XX:UseSSE=3 -XX:+UseFastAccessorMethods -XX:+OptimizeStringConcat -XX:+AggressiveOpts -client"
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(953, 658)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -175,10 +180,11 @@ class Ui_MainWindow(object):
         self.text_jvm.setObjectName("text_jvm")
         self.horizontalLayout_4.addWidget(self.text_jvm)
         MainWindow.setCentralWidget(self.centralwidget)
+        self.text_jvm.setPlainText(jvmtext)
 
         self.retranslateUi(MainWindow)
         self.button_refresh.clicked.connect(lambda : self.refresh_modpack(self))
-        self.button_launch.clicked.connect(lambda : launchwrapper(self,self.text_id,self.text_pass,self.list_modpack))
+        self.button_launch.clicked.connect(lambda : launchwrapper(self,self.text_id,self.text_pass,self.list_modpack,self.text_jvm))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
     def refresh_modpack(self, list_modpack):
         modpack = check()
