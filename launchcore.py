@@ -1,21 +1,27 @@
+import ctypes
 import json
 import os
+import shutil
+import subprocess
 import tkinter
 from subprocess import Popen
 from tkinter import messagebox
 
 import requests
-from wget import download
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWebEngineWidgets import QWebEngineView
+
 
 def makefolder(folder):
     if not(os.path.isdir(folder)):
         os.makedirs(os.path.join(folder))
         return 0
     else:
-        return 1
+        return 1   
+def delfolder(folder):
+    if os.path.isdir(folder):
+        shutil.rmtree(folder)
 def check():
     URL = 'https://gametowndev.tk/list.json'
     response = requests.get(URL)
@@ -34,15 +40,29 @@ def login(ID, password):
             return 0,res['selectedProfile']['name'],res["selectedProfile"]["id"],res['accessToken'],res['clientToken']
     else:
         return 2,response.status_code
+def download(url,folder):
+    subprocess.call(["./wget.exe", "-P {} {}".format(folder, url)])
+def downloadfolder(url,folder):
+    subprocess.call(["./wget.exe", "-r -P {} {}".format(folder, url)])
 def launch(modpack):
+    with open("./instance/{}/timestamp.json".format(modpack)) as f:
+        data = json.load(f)
     print("실행")
     print(modpack)
     url = "https://gametowndev.tk/{}.json".format(modpack)
     response = requests.get(url)
     packdata = response.json()
     print(packdata['version'])
-    makefolder("./instance/{}".format(modpack))
-
+    if packdata['timestamp'] > data['timestamp']:
+        update(modpack,packdata)
+    
+def update(modpack, packdata):
+    update = packdata['update']
+    folder="./instance/{}".format(modpack)
+    makefolder(folder)
+    for i in update:
+        delfolder(folder + "/" + i)
+    downloadfolder("https://gametowndev.tk/{}".format(modpack), "./instance/{}".format(modpack))
 def launchwrapper(self, obj1, obj2, obj3):
     id=obj1.text()
     password=obj2.text()
