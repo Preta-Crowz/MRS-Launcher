@@ -60,7 +60,7 @@ def launch(modpack,jvm):
     if timestamp > data['timestamp']:
         update(modpack,packdata)
     path = os.environ['cd']
-    ctypes.windll.shell32.ShellExecute(0,'open',cd + "/java/bin/java.exe")
+    ctypes.windll.shell32.ShellExecute(0,'open',path + "/java/bin/java.exe")
     
 def update(modpack, packdata):
     update = packdata['update']
